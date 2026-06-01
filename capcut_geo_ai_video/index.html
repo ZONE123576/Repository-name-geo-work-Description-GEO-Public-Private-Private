@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GEO-AI空间选址算法短视频预览</title>
+  <style>
+    :root {
+      --blue: #14d9ff;
+      --deep: #03111f;
+      --gold: #ffd36a;
+      --red: #ff3b4f;
+      --white: #f6fbff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #05070d;
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    .wrap { display: grid; gap: 14px; justify-items: center; padding: 20px; }
+    .stage {
+      width: min(420px, 92vw);
+      aspect-ratio: 9 / 16;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 35%, #12385a 0%, #071727 42%, #020711 100%);
+      border-radius: 18px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(20,217,255,.25) inset;
+      isolation: isolate;
+    }
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background:
+        linear-gradient(rgba(20,217,255,.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20,217,255,.12) 1px, transparent 1px);
+      background-size: 36px 36px;
+      transform: perspective(520px) rotateX(62deg) translateY(12%);
+      animation: gridMove 4s linear infinite;
+      opacity: .65;
+      z-index: 0;
+    }
+    .stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.11), transparent 10%, transparent 85%, rgba(0,0,0,.6));
+      pointer-events: none;
+      z-index: 20;
+    }
+    @keyframes gridMove { to { background-position: 0 36px, 36px 0; } }
+    .scene { position: absolute; inset: 0; opacity: 0; z-index: 1; animation-fill-mode: both; }
+    .city { position: absolute; inset: 0; transform-origin: center bottom; }
+    .building {
+      position: absolute; bottom: 23%; width: 8%; border: 1px solid rgba(20,217,255,.42);
+      background: linear-gradient(180deg, rgba(20,217,255,.22), rgba(4,15,28,.7));
+      box-shadow: 0 0 18px rgba(20,217,255,.2) inset;
+    }
+    .building::after {
+      content: ""; position: absolute; inset: 8px 4px;
+      background: repeating-linear-gradient(180deg, rgba(255,211,106,.75) 0 2px, transparent 2px 13px);
+      opacity: .8;
+    }
+    .road { position: absolute; bottom: 0; left: 37%; width: 26%; height: 48%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent); clip-path: polygon(35% 0,65% 0,100% 100%,0 100%); }
+    .road::after { content:""; position:absolute; left: 49%; top: 0; bottom: 0; border-left: 2px dashed rgba(255,211,106,.8); }
+    .dot, .node { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 18px var(--blue); }
+    .label { position:absolute; padding: 5px 8px; border:1px solid rgba(20,217,255,.55); background:rgba(2,8,16,.62); color:#bdf5ff; font-size:12px; letter-spacing:.04em; backdrop-filter: blur(4px); }
+    .scan { position:absolute; left:-20%; right:-20%; height: 5px; background: linear-gradient(90deg, transparent, var(--blue), transparent); box-shadow: 0 0 24px var(--blue); animation: scan 1.6s linear infinite; }
+    @keyframes scan { from { top: 0; } to { top: 100%; } }
+    .title {
+      position:absolute; left: 28px; right: 28px; top: 8%;
+      font-weight: 950; line-height: 1.05; letter-spacing: -.04em; font-size: 44px;
+      text-shadow: 0 4px 16px rgba(0,0,0,.85), 0 0 20px rgba(20,217,255,.45);
+      z-index: 12;
+    }
+    .title .gold { color: var(--gold); text-shadow: 0 0 22px rgba(255,211,106,.65); }
+    .subtitle {
+      position:absolute; left: 28px; right: 28px; bottom: 11%;
+      z-index: 12; font-size: 28px; line-height: 1.18; font-weight: 900; text-align: center;
+      color: #fff; text-shadow: 0 4px 14px #000, 0 0 20px rgba(20,217,255,.38);
+    }
+    .tagline { color: var(--blue); font-size: 16px; letter-spacing:.14em; margin-bottom: 8px; display:block; }
+    .bigword { font-size: 58px; color: var(--gold); display:block; text-shadow: 0 0 28px rgba(255,211,106,.75); }
+    .hud-ring { position:absolute; width: 170px; height:170px; border:1px solid rgba(20,217,255,.5); border-radius:50%; box-shadow:0 0 22px rgba(20,217,255,.28); animation: spin 5s linear infinite; }
+    .hud-ring::before,.hud-ring::after{content:"";position:absolute;inset:18px;border:1px dashed rgba(255,211,106,.55);border-radius:50%;}
+    .hud-ring::after{inset:44px;border-color:rgba(20,217,255,.6);}
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .store { position:absolute; width: 118px; height: 84px; bottom: 34%; border-radius: 8px; border:1px solid rgba(255,255,255,.35); background:rgba(5,12,20,.8); box-shadow:0 12px 28px rgba(0,0,0,.35); }
+    .store::before { content:""; position:absolute; left:0; right:0; top:0; height:25px; background:var(--store); box-shadow:0 0 20px var(--store); }
+    .store::after { content:attr(data-name); position:absolute; top:5px; left:0; right:0; text-align:center; font-weight:900; font-size:14px; }
+    .route { position:absolute; height:2px; background:linear-gradient(90deg, transparent, var(--blue), var(--gold), transparent); box-shadow:0 0 16px var(--blue); transform-origin:left; animation: pulse 1.4s infinite alternate; }
+    @keyframes pulse { from { opacity:.35; filter:brightness(.7); } to { opacity:1; filter:brightness(1.8); } }
+    .heat { position:absolute; border-radius:50%; background:radial-gradient(circle, rgba(255,77,51,.88), rgba(255,211,106,.35) 42%, transparent 70%); mix-blend-mode: screen; animation: breathe 1.7s infinite alternate; }
+    @keyframes breathe { from { transform:scale(.9); opacity:.65; } to { transform:scale(1.12); opacity:1; } }
+    .impact { animation: impact .32s steps(2,end) infinite; }
+    @keyframes impact { 50% { transform: translate(2px,-1px) scale(1.01); } }
+    .controls { width: min(420px, 92vw); display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+    button { background:#0b2742; color:#e9fcff; border:1px solid rgba(20,217,255,.45); padding:10px 14px; border-radius:999px; font-weight:800; cursor:pointer; }
+    button:hover { background:#123d63; }
+    .note { max-width: 640px; color:#b7c6d6; font-size: 13px; line-height: 1.7; text-align:center; }
+    .s1 { animation: show 2.3s linear 0s both; }
+    .s2 { animation: show 3.9s linear 2.3s both; }
+    .s3 { animation: show 3.8s linear 6.2s both; filter:saturate(.2); }
+    .s4 { animation: show 4.8s linear 10s both; }
+    .s5 { animation: show 4s linear 14.8s both; }
+    .s6 { animation: show 6s linear 18.8s both; }
+    .s7 { animation: show 5.7s linear 24.8s both; }
+    .s8 { animation: show 6.3s linear 30.5s both; }
+    .s9 { animation: show 5.8s linear 36.8s both; }
+    .s10 { animation: show 4.2s linear 42.6s both; }
+    .s11 { animation: show 6.7s linear 46.8s both; }
+    .s12 { animation: show 6.5s linear 53.5s both; }
+    @keyframes show { 0%,100% { opacity:0; } 5%,92% { opacity:1; } }
+    .progress { position:absolute; left:0; bottom:0; height:4px; background:linear-gradient(90deg,var(--blue),var(--gold)); z-index:30; animation: progress 60s linear both; }
+    @keyframes progress { from { width:0; } to { width:100%; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="stage" id="stage" aria-label="GEO-AI短视频预览">
+      <div class="progress"></div>
+
+      <div class="scene s1 impact">
+        <div class="city">
+          <div class="road"></div>
+          <div class="building" style="left:7%;height:33%;"></div><div class="building" style="left:18%;height:48%;"></div><div class="building" style="left:29%;height:39%;"></div><div class="building" style="left:65%;height:44%;"></div><div class="building" style="left:77%;height:52%;"></div><div class="building" style="left:88%;height:34%;"></div>
+        </div>
+        <div class="title"><span class="tagline">STOP BLIND EXPANSION</span>别再<br><span class="gold">盲目开店</span>了！</div>
+        <div class="scan"></div>
+      </div>
+
+      <div class="scene s2">
+        <div class="store" data-name="蓝色咖啡" style="--store:#1689ff;left:13%;"></div>
+        <div class="store" data-name="红色茶饮" style="--store:#ff344c;right:13%;"></div>
+        <div class="hud-ring" style="left:28%;top:25%;"></div>
+        <div class="subtitle">为什么大品牌<br><span class="bigword">精准开在</span>对手脸上？</div>
+      </div>
+
+      <div class="scene s3">
+        <div class="label" style="left:26%;top:31%;font-size:18px;color:#fff;border-color:#777;">人工数人流</div>
+        <div class="label" style="left:20%;top:43%;border-color:#777;color:#aaa;">低效率 / 靠经验 / 易误判</div>
+        <div class="subtitle">靠的早就<br><span style="color:#ff5264;font-size:44px;">不是人工蹲点</span></div>
+      </div>
+
+      <div class="scene s4">
+        <div class="hud-ring" style="left:27%;top:28%;width:210px;height:210px;"></div>
+        <div class="scan"></div>
+        <div class="label" style="left:24%;top:21%;">SATELLITE SCAN</div>
+        <div class="subtitle">隐藏在城市数据背后的<br><span class="bigword">GEO-AI</span>空间选址算法</div>
+      </div>
+
+      <div class="scene s5">
+        <div class="city" style="transform:scale(.94);">
+          <div class="building" style="left:10%;height:42%;"></div><div class="building" style="left:22%;height:58%;"></div><div class="building" style="left:38%;height:35%;"></div><div class="building" style="left:58%;height:63%;"></div><div class="building" style="left:75%;height:45%;"></div>
+        </div>
+        <div class="label" style="left:13%;top:17%;">DIGITAL TWIN CITY</div>
+        <div class="subtitle">在 AI 眼里<br>整座城市都已被<span style="color:#14d9ff;">数字化</span></div>
+      </div>
+
+      <div class="scene s6">
+        <div class="route" style="left:8%;top:28%;width:76%;transform:rotate(20deg);"></div><div class="route" style="left:10%;top:52%;width:80%;transform:rotate(-12deg);"></div><div class="route" style="left:20%;top:67%;width:60%;transform:rotate(8deg);"></div>
+        <div class="heat" style="left:18%;top:27%;width:150px;height:150px;"></div><div class="heat" style="right:11%;bottom:22%;width:190px;height:190px;"></div>
+        <div class="subtitle"><span class="bigword">通勤轨迹</span>消费热力分布<br>进入同一张地图</div>
+      </div>
+
+      <div class="scene s7">
+        <div class="road" style="left:10%;width:80%;height:100%;clip-path:none;bottom:0;opacity:.55;"></div>
+        <div class="label" style="left:13%;top:28%;">TRAFFIC LIGHT 120m</div><div class="label" style="right:12%;top:42%;">ACCESS SCORE 8.7</div><div class="label" style="left:28%;top:57%;">WAIT 35s</div>
+        <div class="scan"></div>
+        <div class="subtitle">红绿灯距离<br>路口可达性<br><span style="color:#ffd36a;">重新评分</span></div>
+      </div>
+
+      <div class="scene s8">
+        <div class="node" style="left:19%;top:30%;background:#ff3b4f;box-shadow:0 0 18px #ff3b4f;"></div><div class="node" style="left:67%;top:34%;background:#ff3b4f;box-shadow:0 0 18px #ff3b4f;"></div><div class="node" style="left:25%;top:65%;background:#ff3b4f;box-shadow:0 0 18px #ff3b4f;"></div>
+        <div class="heat" style="left:30%;top:39%;width:160px;height:160px;background:radial-gradient(circle, rgba(255,211,106,.9), rgba(255,211,106,.25) 45%, transparent 70%);"></div>
+        <div class="label" style="left:28%;top:43%;color:#ffe8a2;border-color:#ffd36a;">OPPORTUNITY ZONE</div>
+        <div class="subtitle">竞品没有覆盖的<br><span class="bigword">黄金盲区</span></div>
+      </div>
+
+      <div class="scene s9">
+        <div class="label" style="left:12%;top:22%;">客流预测 +38%</div><div class="label" style="left:12%;top:31%;">ROI SCORE 92.8</div><div class="label" style="left:12%;top:40%;">租金压力 低</div><div class="label" style="left:12%;top:49%;">转化率 上升</div>
+        <svg viewBox="0 0 320 180" style="position:absolute;left:10%;right:10%;bottom:26%;width:80%;filter:drop-shadow(0 0 12px #14d9ff);"><polyline points="10,150 60,128 105,136 145,98 190,80 235,50 300,22" fill="none" stroke="#ffd36a" stroke-width="6"/><polyline points="10,150 60,128 105,136 145,98 190,80 235,50 300,22" fill="none" stroke="#14d9ff" stroke-width="2"/></svg>
+        <div class="subtitle">地理位置<br>变成<span style="color:#ffd36a;">盈利模型</span></div>
+      </div>
+
+      <div class="scene s10 impact">
+        <div style="position:absolute;left:44%;top:0;width:12%;height:78%;background:linear-gradient(180deg,rgba(255,211,106,.05),rgba(255,211,106,.95),rgba(255,211,106,.05));filter:blur(2px);box-shadow:0 0 60px #ffd36a;"></div>
+        <div class="subtitle" style="top:32%;bottom:auto;"><span style="font-size:28px;">这不叫开店</span><span class="bigword">降维打击</span></div>
+      </div>
+
+      <div class="scene s11">
+        <div class="label" style="left:12%;top:18%;">SITE SELECTION REPORT</div><div class="label" style="left:12%;top:27%;">选址评分 92.8</div><div class="label" style="left:12%;top:36%;">竞品分布 已识别</div><div class="label" style="left:12%;top:45%;">客流预测 已生成</div><div class="label" style="left:12%;top:54%;">ROI模型 已计算</div>
+        <div class="subtitle">把经验判断<br>变成<span style="color:#14d9ff;">数字决策</span></div>
+      </div>
+
+      <div class="scene s12">
+        <div class="label" style="left:12%;top:21%;">连锁</div><div class="label" style="right:12%;top:21%;">餐饮</div><div class="label" style="left:12%;top:31%;">零售</div><div class="label" style="right:12%;top:31%;">文旅</div>
+        <div class="subtitle" style="bottom:16%;"><span class="bigword">关注我</span>私信留下你的行业<br>我带你用 GEO-AI 开挂</div>
+      </div>
+    </section>
+
+    <div class="controls">
+      <button type="button" onclick="restart()">重播动画</button>
+      <button type="button" onclick="speak()">播放浏览器配音</button>
+      <button type="button" onclick="stopSpeak()">停止配音</button>
+    </div>
+    <p class="note">说明：此页面是剪映成片预览板。当前容器没有剪映 GUI/导出器，无法直接操作你的剪映客户端；可用浏览器打开本文件预览节奏，按 capcut_editing_guide.md 在剪映复刻并导入 captions.srt。</p>
+  </main>
+  <script>
+    const script = `别再盲目开店了！你有没有发现，为什么瑞幸、蜜雪冰城这些品牌，总能精准开在对手的脸上？他们靠的，早就不是人工蹲点。而是隐藏在城市数据背后的，GEO-AI空间选址算法。在AI眼里，整座城市都已经被数字化。它能把人口通勤轨迹、消费热力分布、红绿灯距离、路口可达性，以及竞品门店的盲区，进行高强度的时空多维叠加。最后，直接把一个地理位置，变成一套可计算、可预测、可放大的盈利模型。这不叫开店，这叫降维打击。真正的科技，不是让老板更辛苦，而是把过去靠经验判断的事，变成更接近确定性的数字决策。如果你是连锁品牌、餐饮、零售、文旅项目的负责人，想用科技的上帝视角，帮企业截流、选址、变现，关注我，私信留下你的行业。我带你用GEO-AI开挂。`;
+    function restart() {
+      const el = document.getElementById('stage');
+      el.style.display = 'none';
+      void el.offsetHeight;
+      el.style.display = '';
+    }
+    function speak() {
+      if (!('speechSynthesis' in window)) return alert('当前浏览器不支持 Web Speech 配音。');
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(script);
+      utterance.lang = 'zh-CN';
+      utterance.rate = 1.08;
+      utterance.pitch = .92;
+      speechSynthesis.speak(utterance);
+      restart();
+    }
+    function stopSpeak() { if ('speechSynthesis' in window) speechSynthesis.cancel(); }
+  </script>
+</body>
+</html>
