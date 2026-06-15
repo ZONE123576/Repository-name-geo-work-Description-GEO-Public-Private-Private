@@ -1,98 +1,212 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ZONE | Personal Lab</title>
+    <title>ZONE | 抖音大字贴通告合作</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <canvas id="field" aria-hidden="true"></canvas>
+
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="ZONE home">
+      <a class="brand" href="#top" aria-label="ZONE 首页">
         <span class="brand-mark">Z</span>
-        <span>ZONE</span>
+        <span>通告接单</span>
       </a>
-      <nav class="nav" aria-label="Main navigation">
-        <a href="#zones">Zones</a>
-        <a href="#work">Works</a>
-        <a href="#signal">Signal</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="#requirements">要求</a>
+        <a href="#geo">GEO</a>
+        <a href="#examples">示例</a>
+        <a href="#contact">联系</a>
       </nav>
     </header>
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div class="hero-content">
-          <p class="kicker">Personal website / creative control room</p>
-          <h1 id="hero-title">
-            Welcome to
-            <span class="zone-word" aria-label="ZONE">
-              <button data-letter="Z">Z</button>
-              <button data-letter="O">O</button>
-              <button data-letter="N">N</button>
-              <button data-letter="E">E</button>
-            </span>
-          </h1>
-          <p class="intro">
-            A playful personal website for experiments, projects, thoughts, and contact links.
-            This temporary version is already shaped around the ZONE identity and can be refined later.
+        <div class="hero-shade"></div>
+
+        <div class="hero-layout">
+          <div class="hero-content">
+            <p class="kicker">空闲时间接单 / 发布后审核结算</p>
+            <h1 id="hero-title">
+              发大字贴
+              <span>赚零花钱</span>
+            </h1>
+            <p class="intro">
+              适合宝妈、学生、上班族和有空闲时间想做兼职的人。主要发抖音大字贴，
+              视频号和小红书也可以发。按要求发布内容、保留截图，审核通过后安排结算。
+            </p>
+
+            <div class="hero-stats" aria-label="合作重点">
+              <div>
+                <strong>不用露脸</strong>
+                <span>按主题发大字贴即可</span>
+              </div>
+              <div>
+                <strong>时间自由</strong>
+                <span>有空闲账号就能接</span>
+              </div>
+              <div>
+                <strong>按单确认</strong>
+                <span>价格和要求先沟通</span>
+              </div>
+            </div>
+
+            <div class="hero-actions" aria-label="快捷操作">
+              <a class="primary-action" href="#contact">我要接单</a>
+              <a class="ghost-action" href="#examples">看发布样子</a>
+            </div>
+          </div>
+
+          <figure class="hero-phone" aria-label="抖音大字贴示例">
+            <div class="big-text-preview">
+              <span>Note</span>
+              <strong>发一张大字贴</strong>
+              <strong>空闲时间接单</strong>
+              <strong>审核后结算</strong>
+            </div>
+            <figcaption>参考样式：大字醒目，内容直接，适合手机端发布。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="requirements" class="section zones-section" aria-labelledby="requirements-title">
+        <div class="section-heading">
+          <p class="kicker">适合人群</p>
+          <h2 id="requirements-title">适合接单的人和基本要求</h2>
+        </div>
+
+        <div class="zone-grid">
+          <article class="zone-card" data-zone="01">
+            <span class="zone-number">01</span>
+            <h3>宝妈可做</h3>
+            <p>带娃间隙、有手机、有正常账号，就可以先发主页截图确认是否适合。</p>
+          </article>
+          <article class="zone-card" data-zone="02">
+            <span class="zone-number">02</span>
+            <h3>学生可做</h3>
+            <p>课余时间可以接，主要按要求发布大字贴，内容简单清楚，不需要复杂剪辑。</p>
+          </article>
+          <article class="zone-card" data-zone="03">
+            <span class="zone-number">03</span>
+            <h3>空闲可做</h3>
+            <p>上班族、自由职业、有空闲时间的人都可以，确认任务后再发，避免白忙。</p>
+          </article>
+          <article class="zone-card" data-zone="04">
+            <span class="zone-number">04</span>
+            <h3>按单结算</h3>
+            <p>发布后保留截图和链接，审核通过后登记结算，具体价格先联系确认。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="geo" class="section geo-section" aria-labelledby="geo-title">
+        <div class="section-heading">
+          <p class="kicker">What is GEO</p>
+          <h2 id="geo-title">简单说，GEO 就是让 AI 更容易搜到你</h2>
+        </div>
+
+        <div class="geo-copy">
+          <p>
+            以前大家做推广，主要是让百度、抖音、小红书这些平台更容易搜到内容。
+            现在很多人会直接问豆包、Kimi、通义、DeepSeek 这类 AI：
+            “附近哪家店适合？”“有什么靠谱渠道？”“这个品牌怎么样？”
           </p>
-          <div class="hero-actions" aria-label="Quick actions">
-            <a class="primary-action" href="#work">View Works</a>
-            <a class="ghost-action" href="#signal">Connect</a>
+          <p>
+            GEO 可以理解成“面向 AI 搜索的内容铺设”。我们发布大字贴和平台内容，
+            是为了让真实的平台信息、关键词和用户表达持续出现。这样以后别人问 AI 相关问题时，
+            比如“豆包能不能搜到这家店/这个服务”，内容就更有机会被识别、引用或推荐。
+          </p>
+        </div>
+      </section>
+
+      <section id="examples" class="section work-section" aria-labelledby="examples-title">
+        <div class="section-heading">
+          <p class="kicker">Post examples</p>
+          <h2 id="examples-title">你需要发什么：抖音大字贴示例</h2>
+        </div>
+
+        <div class="example-layout">
+          <figure class="example-image">
+            <div class="big-text-preview">
+              <span>Note</span>
+              <strong>不用露脸</strong>
+              <strong>发大字贴</strong>
+              <strong>赚零花钱</strong>
+            </div>
+            <figcaption>示例：大标题醒目，内容简单直接，适合抖音大字贴形式。</figcaption>
+          </figure>
+
+          <div class="work-list example-cards">
+            <article class="work-card">
+              <span class="work-tag">发布平台</span>
+              <h3>优先抖音</h3>
+              <p>主要发抖音大字贴。你有视频号或小红书账号，也可以按同样方向发布。</p>
+            </article>
+            <article class="work-card">
+              <span class="work-tag">内容形式</span>
+              <h3>大字贴方向</h3>
+              <p>一张图或短视频里放醒目的大字标题，表达要像真实分享，不要堆太多广告词。</p>
+            </article>
+            <article class="work-card">
+              <span class="work-tag">提交材料</span>
+              <h3>发布后反馈</h3>
+              <p>发布完成后，把作品链接、发布截图、账号主页截图发给我，我会统一登记审核。</p>
+            </article>
           </div>
         </div>
-        <aside class="mode-panel" aria-label="Site mode">
-          <span class="panel-label">Mode</span>
-          <button class="mode-button is-active" data-mode="orbit" type="button">Orbit</button>
-          <button class="mode-button" data-mode="focus" type="button">Focus</button>
-          <button class="mode-button" data-mode="night" type="button">Night</button>
-        </aside>
       </section>
 
-      <section id="zones" class="section zones-section" aria-labelledby="zones-title">
+      <section class="section process-section" aria-labelledby="process-title">
         <div class="section-heading">
-          <p class="kicker">Pick a lane</p>
-          <h2 id="zones-title">Four spaces inside ZONE</h2>
+          <p class="kicker">Workflow</p>
+          <h2 id="process-title">合作流程</h2>
         </div>
-        <div class="zone-grid">
-          <article class="zone-card"><span class="zone-number">01</span><h3>Create</h3><p>Design, writing, video, photography, or anything worth showing.</p></article>
-          <article class="zone-card"><span class="zone-number">02</span><h3>Build</h3><p>Projects with clear goals, process, and visible outcomes.</p></article>
-          <article class="zone-card"><span class="zone-number">03</span><h3>Think</h3><p>Notes, observations, ideas, and topics currently being explored.</p></article>
-          <article class="zone-card"><span class="zone-number">04</span><h3>Connect</h3><p>Email, social links, collaboration info, and the fastest way to reach ZONE.</p></article>
+
+        <div class="process-list">
+          <div class="process-item">
+            <span>1</span>
+            <p>添加微信或手机号，备注“红人通告兼职”。</p>
+          </div>
+          <div class="process-item">
+            <span>2</span>
+            <p>发送抖音、视频号或小红书主页截图，确认是否符合本次通告。</p>
+          </div>
+          <div class="process-item">
+            <span>3</span>
+            <p>领取大字贴主题、文案方向或图片素材，按要求发布。</p>
+          </div>
+          <div class="process-item">
+            <span>4</span>
+            <p>提交发布截图和链接，审核通过后安排结算。</p>
+          </div>
         </div>
       </section>
 
-      <section id="work" class="section work-section" aria-labelledby="work-title">
-        <div class="section-heading">
-          <p class="kicker">Featured works</p>
-          <h2 id="work-title">Three placeholder slots for now</h2>
-        </div>
-        <div class="work-list">
-          <article class="work-card"><span class="work-tag">Brand</span><h3>ZONE Identity System</h3><p>A personal brand system built around name, color, tone, and reusable visuals.</p></article>
-          <article class="work-card"><span class="work-tag">Product</span><h3>Interactive Mini Tool</h3><p>A small idea turned into a web tool that people can use directly.</p></article>
-          <article class="work-card"><span class="work-tag">Writing</span><h3>Notes From The Zone</h3><p>A living notes section for judgment, taste, and experiments in progress.</p></article>
-        </div>
-      </section>
-
-      <section id="signal" class="section signal-section" aria-labelledby="signal-title">
+      <section id="contact" class="section signal-section" aria-labelledby="contact-title">
         <div class="signal-copy">
-          <p class="kicker">Signal open</p>
-          <h2 id="signal-title">Replace this with real contact info later</h2>
-          <p>For now this page is online as a temporary preview. Later we can add your email, WeChat, Xiaohongshu, GitHub, portfolio links, and real projects.</p>
+          <p class="kicker">Contact</p>
+          <h2 id="contact-title">联系我领取通告要求</h2>
+          <p>
+            添加时请直接备注“红人通告兼职”，并说明你可以发布的平台：
+            抖音、视频号或小红书。如果已经有账号主页截图，也可以一起发来，方便更快确认任务。
+          </p>
         </div>
         <div class="signal-box">
-          <span>ZONE@yourmail.com</span>
-          <button id="copyEmail" type="button">Copy Email</button>
+          <span id="wechatId">13622923876</span>
+          <button id="copyWechat" type="button">复制联系方式</button>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <span>ZONE Personal Lab</span>
-      <span>Made as a living website, not a static resume.</span>
+      <span>ZONE 抖音大字贴通告合作</span>
+      <span>添加联系方式前请先看清发布要求和示例。</span>
     </footer>
+
+    <a class="sticky-contact" href="#contact">我要接单 · 复制联系方式</a>
+
     <script src="script.js"></script>
   </body>
 </html>
