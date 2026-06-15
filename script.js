@@ -1,9 +1,8 @@
 const body = document.body;
 const canvas = document.querySelector("#field");
 const ctx = canvas.getContext("2d");
-const modeButtons = document.querySelectorAll(".mode-button");
-const zoneLetters = document.querySelectorAll(".zone-word button");
-const copyButton = document.querySelector("#copyEmail");
+const copyButton = document.querySelector("#copyWechat");
+const wechatId = document.querySelector("#wechatId");
 
 let width = 0;
 let height = 0;
@@ -35,7 +34,6 @@ function createParticles() {
 
 function draw() {
   ctx.clearRect(0, 0, width, height);
-  const mode = body.dataset.mode || "orbit";
 
   particles.forEach((p, index) => {
     if (pointer.active) {
@@ -58,7 +56,7 @@ function draw() {
     if (p.y < -20) p.y = height + 20;
     if (p.y > height + 20) p.y = -20;
 
-    const hue = mode === "night" ? 160 : mode === "focus" ? 285 : index % 3 === 0 ? 190 : 18;
+    const hue = index % 3 === 0 ? 190 : 18;
     ctx.fillStyle = `hsla(${hue}, 92%, 68%, 0.54)`;
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -83,13 +81,7 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-function activateLetter(button) {
-  button.classList.add("is-lit");
-  window.setTimeout(() => button.classList.remove("is-lit"), 520);
-}
-
 function init() {
-  body.dataset.mode = "orbit";
   setSize();
   createParticles();
   draw();
@@ -108,29 +100,19 @@ window.addEventListener("pointerleave", () => {
   pointer.active = false;
 });
 
-modeButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    body.dataset.mode = button.dataset.mode;
-    modeButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+if (copyButton && wechatId) {
+  copyButton.addEventListener("click", async () => {
+    const wechat = wechatId.textContent.trim();
+    try {
+      await navigator.clipboard.writeText(wechat);
+      copyButton.textContent = "已复制";
+    } catch {
+      copyButton.textContent = wechat;
+    }
+    window.setTimeout(() => {
+      copyButton.textContent = "复制联系方式";
+    }, 1500);
   });
-});
-
-zoneLetters.forEach((button, index) => {
-  button.addEventListener("click", () => activateLetter(button));
-  window.setTimeout(() => activateLetter(button), 420 + index * 150);
-});
-
-copyButton.addEventListener("click", async () => {
-  const email = "ZONE@yourmail.com";
-  try {
-    await navigator.clipboard.writeText(email);
-    copyButton.textContent = "Copied";
-  } catch {
-    copyButton.textContent = email;
-  }
-  window.setTimeout(() => {
-    copyButton.textContent = "Copy Email";
-  }, 1500);
-});
+}
 
 init();
