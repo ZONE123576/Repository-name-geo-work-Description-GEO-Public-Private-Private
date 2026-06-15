@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZONE | Personal Lab</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <canvas id="field" aria-hidden="true"></canvas>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="ZONE home">
+        <span class="brand-mark">Z</span>
+        <span>ZONE</span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#zones">Zones</a>
+        <a href="#work">Works</a>
+        <a href="#signal">Signal</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="hero-content">
+          <p class="kicker">Personal website / creative control room</p>
+          <h1 id="hero-title">
+            Welcome to
+            <span class="zone-word" aria-label="ZONE">
+              <button data-letter="Z">Z</button>
+              <button data-letter="O">O</button>
+              <button data-letter="N">N</button>
+              <button data-letter="E">E</button>
+            </span>
+          </h1>
+          <p class="intro">
+            A playful personal website for experiments, projects, thoughts, and contact links.
+            This temporary version is already shaped around the ZONE identity and can be refined later.
+          </p>
+          <div class="hero-actions" aria-label="Quick actions">
+            <a class="primary-action" href="#work">View Works</a>
+            <a class="ghost-action" href="#signal">Connect</a>
+          </div>
+        </div>
+        <aside class="mode-panel" aria-label="Site mode">
+          <span class="panel-label">Mode</span>
+          <button class="mode-button is-active" data-mode="orbit" type="button">Orbit</button>
+          <button class="mode-button" data-mode="focus" type="button">Focus</button>
+          <button class="mode-button" data-mode="night" type="button">Night</button>
+        </aside>
+      </section>
+
+      <section id="zones" class="section zones-section" aria-labelledby="zones-title">
+        <div class="section-heading">
+          <p class="kicker">Pick a lane</p>
+          <h2 id="zones-title">Four spaces inside ZONE</h2>
+        </div>
+        <div class="zone-grid">
+          <article class="zone-card"><span class="zone-number">01</span><h3>Create</h3><p>Design, writing, video, photography, or anything worth showing.</p></article>
+          <article class="zone-card"><span class="zone-number">02</span><h3>Build</h3><p>Projects with clear goals, process, and visible outcomes.</p></article>
+          <article class="zone-card"><span class="zone-number">03</span><h3>Think</h3><p>Notes, observations, ideas, and topics currently being explored.</p></article>
+          <article class="zone-card"><span class="zone-number">04</span><h3>Connect</h3><p>Email, social links, collaboration info, and the fastest way to reach ZONE.</p></article>
+        </div>
+      </section>
+
+      <section id="work" class="section work-section" aria-labelledby="work-title">
+        <div class="section-heading">
+          <p class="kicker">Featured works</p>
+          <h2 id="work-title">Three placeholder slots for now</h2>
+        </div>
+        <div class="work-list">
+          <article class="work-card"><span class="work-tag">Brand</span><h3>ZONE Identity System</h3><p>A personal brand system built around name, color, tone, and reusable visuals.</p></article>
+          <article class="work-card"><span class="work-tag">Product</span><h3>Interactive Mini Tool</h3><p>A small idea turned into a web tool that people can use directly.</p></article>
+          <article class="work-card"><span class="work-tag">Writing</span><h3>Notes From The Zone</h3><p>A living notes section for judgment, taste, and experiments in progress.</p></article>
+        </div>
+      </section>
+
+      <section id="signal" class="section signal-section" aria-labelledby="signal-title">
+        <div class="signal-copy">
+          <p class="kicker">Signal open</p>
+          <h2 id="signal-title">Replace this with real contact info later</h2>
+          <p>For now this page is online as a temporary preview. Later we can add your email, WeChat, Xiaohongshu, GitHub, portfolio links, and real projects.</p>
+        </div>
+        <div class="signal-box">
+          <span>ZONE@yourmail.com</span>
+          <button id="copyEmail" type="button">Copy Email</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>ZONE Personal Lab</span>
+      <span>Made as a living website, not a static resume.</span>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
