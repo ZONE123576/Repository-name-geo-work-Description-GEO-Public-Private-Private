@@ -1,0 +1,20 @@
+{
+  "project": "GEO-AI空间选址算法短视频",
+  "format": "vertical_9_16",
+  "resolution": "1080x1920",
+  "duration_seconds": 60,
+  "capcut_style": "商业认知类 + AI科技感 + 快节奏冲击 + HUD数据叠层 + 大字字幕",
+  "files": {
+    "html_preview": "index.html",
+    "voiceover_script": "voiceover.txt",
+    "captions": "captions.srt",
+    "editing_guide": "capcut_editing_guide.md",
+    "ai_prompts": "ai_generation_prompts.md"
+  },
+  "recommended_capcut_import_order": [
+    "先导入AI生成的视频/图片素材",
+    "导入captions.srt作为字幕",
+    "按voiceover.txt录制或粘贴AI配音",
+    "参考capcut_editing_guide.md添加HUD、扫描、故障、闪白、震动、数据流特效"
+  ]
+}
